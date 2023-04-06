@@ -1,27 +1,59 @@
+<script setup>
+import { ref } from "vue";
+import logo from "assets/images/eyelogo.jpg";
+
+const drawer = ref(false);
+
+const leftDrawerOpen = () => drawer.value = !drawer.value;
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
         <q-toolbar-title>
-          temmy.dev
+          <q-img
+            :src="logo"
+            style="height: 50px; max-width: 50px"
+          />
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div class="gt-sm">
+          <q-btn
+            flat
+            label="courses"
+            rounded
+            class="q-mr-sm"
+          />
+          <q-btn
+            outline
+            label="sign up"
+            rounded
+            class="q-mr-sm"
+          />
+          <q-btn
+            outline
+            label="sign in"
+            rounded
+
+          />
+        </div>
+        <div class="lt-md">
+          <q-btn
+            flat
+            dense
+            round
+            @click="drawer = !drawer"
+            icon="menu"
+            aria-label="Menu"
+          />
+
+
+        </div>
       </q-toolbar>
     </q-header>
-
     <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
+      v-model="drawer"
       bordered
     >
       <q-list>
@@ -31,86 +63,21 @@
           Essential Links
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
       </q-list>
     </q-drawer>
+
 
     <q-page-container>
       <router-view />
     </q-page-container>
+    <q-footer
+      elevated
+    >
+      <q-toolbar>
+       <q-space />
+        &copy; temmy.dev {{new Date().getFullYear()}}
+        <q-space/>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
-
-<script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
-
-  setup () {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
-</script>
